@@ -58,6 +58,9 @@ class Header {
 private:
     vector<string> attributes;
 public:
+    Header (vector<string> input) : attributes (input) {}
+    Header () {}
+
     void addAttributeToHeader (string valueToAdd)
     {
         attributes.push_back(valueToAdd);

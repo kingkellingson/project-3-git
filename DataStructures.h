@@ -15,6 +15,10 @@ public:
     void toString () const {
         cout << description;
     }
+    string getDescription ()
+    {
+        return description;
+    }
 };
 
 class Predicate
@@ -26,7 +30,7 @@ public:
     Predicate(string s) : description(s) {}
     void toString ()
     {
-        cout << description;
+        cout << description << "(";
         for (size_t i = 0; i < myParameters.size(); ++i)
         {
             if (i != 0 )
@@ -36,6 +40,16 @@ public:
                 myParameters.at(i)->toString();
         }
         cout << ")";
+    }
+
+    string getDescription ()
+    {
+        return description;
+    }
+
+    vector<Parameter*> getParameters ()
+    {
+        return myParameters;
     }
 
     void insertParameter (string toInsert)

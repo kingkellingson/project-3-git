@@ -37,3 +37,6 @@ cout << endl << "_________NOW TESTING_________";
         myDatabase.addRelationToMap(myRelation1);
         myDatabase.addRelationToMap(myRelation2);
         myDatabase.toString();
+
+
+

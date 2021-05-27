@@ -32,6 +32,26 @@ public:
     //SCHEMES COLON scheme schemeList FACTS COLON factList RULES COLON ruleList QUERIES COLON query queryList EOF
     {};
 
+    vector<Predicate*>& getSchemes ()
+    {
+        return mySchemes;
+    }
+
+    vector<Predicate*>& getFacts ()
+    {
+        return myFacts;
+    }
+
+    vector<Predicate*>& getQueries ()
+    {
+        return myQueries;
+    }
+
+    vector<Rule*>& getRules ()
+    {
+        return myRules;
+    }
+
     void toString ()
     {
         cout << "Success!";
@@ -193,7 +213,7 @@ public:
         ruleToHeadPredicate = ruleToHeadPredicate + tokens.at(index-1)->getDescription();
         //LEFT_PAREN
         match (tokens.at(index), "LEFT_PAREN"); //LEFT_PAREN is in the first set of LEFT_PAREN
-        ruleToHeadPredicate = ruleToHeadPredicate + "(";
+
         myRules.push_back(new Rule(ruleToHeadPredicate));
         //ID
         match (tokens.at(index), "ID"); //ID is in the first set of ID
@@ -279,7 +299,7 @@ public:
         queryToPredicate = queryToPredicate + tokens.at(index-1)->getDescription();
         //LEFT_PAREN
         match (tokens.at(index), "LEFT_PAREN"); //LEFT_PAREN is in the first set of LEFT_PAREN
-        queryToPredicate = queryToPredicate + "(";
+
         switch (flag)
         {
             case 'R':
@@ -367,7 +387,7 @@ public:
         schemeToPredicate = schemeToPredicate + tokens.at(index-1)->getDescription();
         //LEFT_PAREN
         match (tokens.at(index), "LEFT_PAREN"); //LEFT_PAREN is in the first set of LEFT_PAREN
-        schemeToPredicate = schemeToPredicate + "(";
+
         mySchemes.push_back(new Predicate(schemeToPredicate)); //makes a scheme from the line.
         //ID
         match (tokens.at(index), "ID"); //ID is in the first set of ID
@@ -438,7 +458,7 @@ public:
         factToPredicate = factToPredicate + tokens.at(index-1)->getDescription();
         //LEFT_PAREN
         match (tokens.at(index), "LEFT_PAREN"); //LEFT_PAREN is in the first set of LEFT_PAREN
-        factToPredicate = factToPredicate + "(";
+
         myFacts.push_back(new Predicate(factToPredicate)); //makes a fact from the line.
         //STRING
         flag = 'D'; ///Changes to Domain mode

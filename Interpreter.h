@@ -35,7 +35,7 @@ public:
         for (map<string, Relation>::iterator it = myRelations.begin(); it != myRelations.end(); it++)
         {
             cout << endl << "MY RELATION:";
-            cout << it->first << " ";
+            it->second.toString();
         }
     }
 };
@@ -50,8 +50,39 @@ public:
     Interpreter (DatalogProgram& parserOutput) : myProgramToInterpret (parserOutput)
     {
         cout << endl << "Recieved!";
+        run();
     }
 
+    void run ()
+    {
+        CreateRelations(); //Creates the Database according to the Schemes
+
+        cout << endl << "You Made it to the Database toString Function!";
+        myDatabase.toString();
+    }
+
+    void CreateRelations ()
+    {
+        for (size_t i = 0; i < myProgramToInterpret.getSchemes().size(); ++i) //for every Scheme in the program's Scheme vector
+        {
+            Header header = CreateHeader (myProgramToInterpret.getSchemes().at(i)); //create a header from the parameters
+            string name = myProgramToInterpret.getSchemes().at(i)->getDescription(); //gets the name of the Relation
+
+            Relation newRelation (name, header); //Creates a relation from the name and header
+            myDatabase.addRelationToMap(newRelation); //adds it to the Database
+        }
+    }
+
+    Header CreateHeader (Predicate* predicate)
+    {
+        Header newHeader; //makes a new header
+        vector <Parameter*> parameters_ = predicate->getParameters(); //makes a vector of Parameter pointers from Predicate
+        for (size_t i = 0; i < parameters_.size(); ++i) //for each pointer
+        {
+            newHeader.addAttributeToHeader(parameters_.at(i)->getDescription()); //add its decription to the Header
+        }
+        return newHeader; //returns the new Header
+    }
 
 };
 
