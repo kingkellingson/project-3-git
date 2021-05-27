@@ -492,7 +492,7 @@ public:
     Parser(vector<Token*>& lexerTokens) : myProgram(lexerTokens) {beginProgram (myProgram);};
 
     void beginProgram(DatalogProgram&);
-
+    DatalogProgram& getProgram();
 };
 
 void Parser::beginProgram(DatalogProgram&)
@@ -506,6 +506,12 @@ void Parser::beginProgram(DatalogProgram&)
         cout << "Failure!" << endl << "  ";
         T->toString();
     }
+}
+
+DatalogProgram& Parser::getProgram()
+{
+    cout << endl << "Gave Program!";
+    return myProgram;
 }
 
 #endif //PROJECT_0_PARSER_H

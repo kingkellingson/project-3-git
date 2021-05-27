@@ -1,5 +1,6 @@
 #include "Lexer.h"
 #include "Parser.h"
+#include "Interpreter.h"
 #include "Token.h"
 #include <iostream>
 #include <istream>
@@ -49,11 +50,16 @@ int main(int argc, char* argv[]) {
     vector<Token*> lexerTokens = lexer->getVectorOfTokens();
     Parser* parser = new Parser (lexerTokens);
 
+    ///Project Three:
+
+    DatalogProgram parserOutput = parser->getProgram();
+    Interpreter* interpreter = new Interpreter (parserOutput);
 
     // TODO
 
     delete lexer;
     delete parser;
+    delete interpreter;
     //cout << endl << ;"End of Program!"
     return 0;
 }
