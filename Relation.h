@@ -34,7 +34,7 @@ public:
 
     void toString ()
     {
-        cout << endl << endl << "Name:" << name;
+        cout << endl << "Name:" << name;
         cout << endl << "Header:" << endl;
         myHeader.toString();
         cout << endl << "Tuples:";

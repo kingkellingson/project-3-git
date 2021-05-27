@@ -30,11 +30,16 @@ public:
         myRelations.insert(pair<string,Relation> (relationToAdd.getName(), relationToAdd));
     }
 
+    map<string, Relation>& getMap ()
+    {
+        return myRelations;
+    }
+
     void toString ()
     {
         for (map<string, Relation>::iterator it = myRelations.begin(); it != myRelations.end(); it++)
         {
-            cout << endl << "MY RELATION:";
+            cout << endl << endl << "MY RELATION:";
             it->second.toString();
         }
     }
@@ -49,16 +54,39 @@ private:
 public:
     Interpreter (DatalogProgram& parserOutput) : myProgramToInterpret (parserOutput)
     {
-        cout << endl << "Recieved!";
+        cout << endl << "Received!";
         run();
     }
 
     void run ()
     {
         CreateRelations(); //Creates the Database according to the Schemes
-
+        FillFacts(); //Fills the Relations with Tuples
         cout << endl << "You Made it to the Database toString Function!";
         myDatabase.toString();
+    }
+
+    void FillFacts ()
+    {
+        for (size_t i = 0; i < myProgramToInterpret.getFacts().size(); ++i) //for every Fact in the program's Fact vector
+        {
+            string nameToMatch = myProgramToInterpret.getFacts().at(i)->getDescription(); //Determines the name of the desired Relation
+            Tuple tuple = CreateTuple (myProgramToInterpret.getFacts().at(i)); //Creates a tuple from the Fact's parameters
+
+            Relation& myRelation = myDatabase.getMap().at(nameToMatch); //creates an alias of the Relation that matched the name
+            myRelation.addTuple(tuple); //Adds the created Tuple to that relation, into its set of Tuples.
+        }
+    }
+
+    Tuple CreateTuple (Predicate* predicate)
+    {
+        Tuple newTuple; //makes a new header
+        vector <Parameter*> parameters_ = predicate->getParameters(); //makes a vector of Parameter pointers from Predicate
+        for (size_t i = 0; i < parameters_.size(); ++i) //for each pointer
+        {
+            newTuple.addValueToTuple(parameters_.at(i)->getDescription()); //add its description to the Header
+        }
+        return newTuple; //returns the new Header
     }
 
     void CreateRelations ()
@@ -79,7 +107,7 @@ public:
         vector <Parameter*> parameters_ = predicate->getParameters(); //makes a vector of Parameter pointers from Predicate
         for (size_t i = 0; i < parameters_.size(); ++i) //for each pointer
         {
-            newHeader.addAttributeToHeader(parameters_.at(i)->getDescription()); //add its decription to the Header
+            newHeader.addAttributeToHeader(parameters_.at(i)->getDescription()); //add its description to the Header
         }
         return newHeader; //returns the new Header
     }
