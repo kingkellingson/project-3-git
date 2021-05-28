@@ -27,20 +27,43 @@ public:
         myTuples.insert(tupleToAdd);
     }
 
+    void ConstantSelect ()
+    {
+
+    }
+
     string getName ()
     {
         return name;
     }
 
+    int NumberTuples ()
+    {
+        return myTuples.size();
+    }
+
+    Header* getHeaderPointer ()
+    {
+        return &myHeader;
+    }
+
     void toString ()
     {
-        cout << endl << "Name:" << name;
+        //cout << endl << "  ";
+        /*for (size_t i = 0; i < myTuples.size(); ++i)
+        {
+            for (size_t j = 0; j < myHeader.size(); ++j)
+            {
+                myHeader.toString(i);
+                cout << "=";
+                myHeader.toString(i)
+            }
+        }
         cout << endl << "Header:" << endl;
-        myHeader.toString();
+        myHeader.toString();*/
         cout << endl << "Tuples:";
         for (Tuple t : myTuples)
         {
-            cout << endl;
             t.toString();
         }
     }

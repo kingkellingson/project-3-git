@@ -14,46 +14,6 @@
 
 using namespace std;
 
-class Tuple {
-private:
-    vector<string> values;
-public:
-
-    bool operator< (const Tuple& other) const
-    {
-        if (this->getVector() < other.getVector())
-        {
-            return true;
-        }
-        else return false;
-    }
-
-    vector<string> getVector () const
-    {
-        return values;
-    }
-
-    void addValueToTuple (string valueToAdd)
-    {
-        values.push_back(valueToAdd);
-    }
-
-    void toString ()
-    {
-        for (size_t i = 0; i < values.size(); ++i)
-        {
-            if (i == 0)
-            {
-                cout << values.at(i);
-            }
-            else
-            {
-                cout << "," << values.at(i);
-            }
-        }
-    }
-};
-
 class Header {
 private:
     vector<string> attributes;
@@ -79,6 +39,84 @@ public:
                 cout << "," << attributes.at(i);
             }
         }
+    }
+
+    int size ()
+    {
+        return attributes.size();
+    }
+
+    void toString (int index)
+    {
+        if (attributes.size() == 0)
+        {
+            cout << endl << "ERROR: Trying to print an Empty Header!";
+            return;
+        }
+        cout << attributes.at(index);
+    }
+};
+
+class Tuple {
+private:
+    vector<string> values;
+    Header header;
+public:
+    bool operator< (const Tuple& other) const
+    {
+        if (this->getVector() < other.getVector())
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    void setHeaderPointer (Header input)
+    {
+        header = input;
+    }
+
+    vector<string> getVector () const
+    {
+        return values;
+    }
+
+    void addValueToTuple (string valueToAdd)
+    {
+        values.push_back(valueToAdd);
+    }
+
+    void toString ()
+    {
+        cout << endl << "  ";
+        for (size_t i = 0; i < values.size(); ++i)
+        {
+            header.toString(i);
+            cout << "=" << values.at(i);
+            if (i == values.size()-1) {}
+            else
+            {
+                cout << ", ";
+            }
+        }
+
+
+        /*for (size_t i = 0; i < values.size(); ++i)
+        {
+            if (i == 0)
+            {
+                cout << values.at(i);
+            }
+            else
+            {
+                cout << "," << values.at(i);
+            }
+        }*/
+    }
+
+    void toString (int index)
+    {
+        cout << values.at(index);
     }
 };
 
