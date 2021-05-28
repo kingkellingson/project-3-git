@@ -41,10 +41,5 @@ Queries:
    snap('33333','Snoopy','12 Apple St.','555-1234')?
    snap(S,'Snoopy',A,P)?
    csg(C,'33333',G)?
-   snap(S,N,A,P)?
-   csg(C,S,G)?
-   cp(C,Q)?
-   cdh(C,D,H)?
-   cr(C,R)?
 
 

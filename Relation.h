@@ -27,9 +27,33 @@ public:
         myTuples.insert(tupleToAdd);
     }
 
-    void ConstantSelect ()
+    set<Tuple> GetSetOfTuples ()
     {
+        return myTuples;
+    }
 
+    void SetSetOfTuples (set<Tuple> input)
+    {
+        myTuples = input;
+    }
+
+    Relation ConstantSelect (string toMatch, size_t index)
+    {
+        //Relation newRelation = *this; //a copy of the current Relation
+        //set<Tuple> oldRelationSet = this->GetSetOfTuples(); // FIXME: Unnecessary copy (for readability)
+        set<Tuple> newRelationSet; //the set that I want to return
+
+        for (Tuple t : myTuples) //go through and find the matches
+        {
+            if (t.getVector().at(index) == toMatch)
+            {
+                newRelationSet.insert(t);
+                //t.setToKeep();
+                cout << endl << "Found a Match!";
+            }
+        }
+        this->SetSetOfTuples(newRelationSet);
+        return *this;
     }
 
     string getName ()
@@ -42,25 +66,13 @@ public:
         return myTuples.size();
     }
 
-    Header* getHeaderPointer ()
+    Header getHeader ()
     {
-        return &myHeader;
+        return myHeader;
     }
 
     void toString ()
     {
-        //cout << endl << "  ";
-        /*for (size_t i = 0; i < myTuples.size(); ++i)
-        {
-            for (size_t j = 0; j < myHeader.size(); ++j)
-            {
-                myHeader.toString(i);
-                cout << "=";
-                myHeader.toString(i)
-            }
-        }
-        cout << endl << "Header:" << endl;
-        myHeader.toString();*/
         cout << endl << "Tuples:";
         for (Tuple t : myTuples)
         {

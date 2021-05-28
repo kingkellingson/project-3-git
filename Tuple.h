@@ -61,6 +61,7 @@ class Tuple {
 private:
     vector<string> values;
     Header header;
+    bool keep = false;
 public:
     bool operator< (const Tuple& other) const
     {
@@ -71,9 +72,24 @@ public:
         else return false;
     }
 
-    void setHeaderPointer (Header input)
+    void setHeader (Header input)
     {
         header = input;
+    }
+
+    Header getHeader ()
+    {
+        return header;
+    }
+
+    void setToKeep ()
+    {
+        keep = true;
+    }
+
+    bool getKeep () const
+    {
+        return keep;
     }
 
     vector<string> getVector () const

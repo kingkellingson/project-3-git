@@ -62,6 +62,8 @@ public:
     {
         CreateRelations(); //Creates the Database according to the Schemes
         FillFacts(); //Fills the Relations with Tuples
+        PreEvaluateQueries();
+        cout << endl << "--------------EVALUATE--------------";
         EvaluateQueries();
         cout << endl << "You Made it to the Database toString Function!";
         //myDatabase.toString();
@@ -70,27 +72,9 @@ public:
     Relation EvaluatePredicate(Predicate predicate)
     {
         string nameToMatch = predicate.getDescription(); //Determines the name of the desired Relation
-        //Tuple tuple = CreateTuple (myProgramToInterpret.getFacts().at(i)); //Creates a tuple from the Fact's parameters
+        Relation copyRelation = myDatabase.getMap().at(nameToMatch); //creates a copy of Relation that matched the name
 
-        Relation& myRelation = myDatabase.getMap().at(nameToMatch); //creates an alias of the Relation that matched the name
-
-        for(size_t i = 0; i<predicate.getParameters().size(); ++i) //for every parameter in the predicate list.
-        {
-            if (predicate.getParameters().at(i)->getDescription().at(0) == '\'' ) //if the first character of the selected predicate is a \'
-            {
-                cout << endl << "Found a Constant";
-                myRelation.ConstantSelect();
-            }
-            else //if not, then it must be a variable.
-            {
-                cout << endl << "Found a Variable";
-            }
-        }
-
-        //myRelation.addTuple(tuple); //Adds the created Tuple to that relation, into its set of Tuples.
-
-
-        Header header2;
+        /*Header header2;
         header2.addAttributeToHeader("D");
         header2.addAttributeToHeader("E");
         header2.addAttributeToHeader("F");
@@ -109,15 +93,31 @@ public:
 
         string toInsert = "Second Relation";
 
-        Relation myRelation2(toInsert, header2);
-        myRelation2.addTuple(first);
-        myRelation2.addTuple(second);
-        return myRelation2;
+        Relation myTestRelation(toInsert, header2);
+        myTestRelation.addTuple(first);
+        myTestRelation.addTuple(second);
+
+        myTestRelation = myTestRelation.ConstantSelect("2", 1);*/
+
+        for(size_t index = 0; index<predicate.getParameters().size(); ++index) //for every parameter in the predicate list.
+        {
+            if (predicate.getParameters().at(index)->getDescription().at(0) == '\'' ) //if the first character of the selected predicate is a \'
+            {
+                cout << endl << "Found a Constant";
+                string toMatch = predicate.getParameters().at(index)->getDescription();
+                copyRelation.ConstantSelect(toMatch, index);
+            }
+            else //if not, then it must be a variable.
+            {
+                cout << endl << "Found a Variable";
+            }
+        }
+        return copyRelation;
     }
 
     void EvaluateQueries ()
     {
-        for (size_t i = 0; i < myProgramToInterpret.getQueries().size(); ++i) //for every Fact in the program's Fact vector
+        for (size_t i = 0; i < myProgramToInterpret.getQueries().size(); ++i) //for every Query in the program's Query vector
         {
             cout << endl;
             myProgramToInterpret.getQueries().at(i)->toString(); //Print out the Query we are looking at.
@@ -151,14 +151,37 @@ public:
             Tuple tuple = CreateTuple (myProgramToInterpret.getFacts().at(i)); //Creates a tuple from the Fact's parameters
 
             Relation& myRelation = myDatabase.getMap().at(nameToMatch); //creates an alias of the Relation that matched the name
-            //tuple.setHeaderPointer(myRelation.getHeaderPointer()); //sets the header pointer of that created Tuple.
+            tuple.setHeader(myRelation.getHeader()); //sets the header pointer of that created Tuple.
             myRelation.addTuple(tuple); //Adds the created Tuple to that relation, into its set of Tuples.
+        }
+    }
+
+    void PreEvaluateQueries ()
+    {
+        for (size_t i = 0; i < myProgramToInterpret.getQueries().size(); ++i) //for every Query in the program's Query vector
+        {
+            cout << endl;
+            myProgramToInterpret.getQueries().at(i)->toString(); //Print out the Query we are looking at.
+            cout << "? ";
+
+
+            Relation PreEvaluatedPredicate = myDatabase.getMap().at(myProgramToInterpret.getQueries().at(i)->getDescription()); //Make a Relation is in the Database
+
+            if (PreEvaluatedPredicate.NumberTuples()==0) //Outputs "No" if it does not have any tuples
+            {
+                cout << "No";
+            }
+            else
+            {
+                cout << "Yes(" << PreEvaluatedPredicate.NumberTuples() << ")"; //And "Yes" with the number of Tuples that matched
+                PreEvaluatedPredicate.toString(); //then prints them out
+            }
         }
     }
 
     Tuple CreateTuple (Predicate* predicate)
     {
-        Tuple newTuple; //makes a new header
+        Tuple newTuple; //makes a new tuple
         vector <Parameter*> parameters_ = predicate->getParameters(); //makes a vector of Parameter pointers from Predicate
         for (size_t i = 0; i < parameters_.size(); ++i) //for each pointer
         {
