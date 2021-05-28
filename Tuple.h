@@ -77,6 +77,7 @@ public:
         else return false;
     }
 
+
     void setHeader (Header input)
     {
         header = input;
@@ -85,16 +86,6 @@ public:
     Header getHeader ()
     {
         return header;
-    }
-
-    void setToKeep ()
-    {
-        keep = true;
-    }
-
-    bool getKeep () const
-    {
-        return keep;
     }
 
     vector<string> getVector () const
@@ -120,19 +111,6 @@ public:
                 cout << ", ";
             }
         }
-
-
-        /*for (size_t i = 0; i < values.size(); ++i)
-        {
-            if (i == 0)
-            {
-                cout << values.at(i);
-            }
-            else
-            {
-                cout << "," << values.at(i);
-            }
-        }*/
     }
 
     void toString (int index)

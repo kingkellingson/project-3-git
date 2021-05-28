@@ -27,11 +27,6 @@ public:
         myTuples.insert(tupleToAdd);
     }
 
-    set<Tuple> GetSetOfTuples ()
-    {
-        return myTuples;
-    }
-
     void SetHeader(Header input)
     {
         myHeader = input;
@@ -44,8 +39,6 @@ public:
 
     Relation ConstantSelect (string toMatch, size_t index)
     {
-        //Relation newRelation = *this; //a copy of the current Relation
-        //set<Tuple> oldRelationSet = this->GetSetOfTuples();
         set<Tuple> newRelationSet; //the set that I want to return
 
         for (Tuple t : myTuples) //go through and find the matches
@@ -54,7 +47,6 @@ public:
             {
                 newRelationSet.insert(t);
                 //t.setToKeep();
-                cout << endl << "Found a Match!";
             }
         }
         this->SetSetOfTuples(newRelationSet);
@@ -63,8 +55,6 @@ public:
 
     Relation VariableSelect (size_t index1, size_t index2)
     {
-        //Relation newRelation = *this; //a copy of the current Relation
-        //set<Tuple> oldRelationSet = this->GetSetOfTuples();
         set<Tuple> newRelationSet; //the set that I want to return
 
         for (Tuple t : myTuples) //go through and find the matches
@@ -103,6 +93,30 @@ public:
                 newTuple.addValueToTuple(valueToAdd); //put it into a new tuple FIXME: Add a header
                 newTuple.setHeader(newHeader);
             }
+            newRelationSet.insert(newTuple); //new Tuple is finished, so put it in the new Set.
+        }
+
+        this->SetHeader(newHeader);
+        this->SetSetOfTuples(newRelationSet);
+        return *this;
+    }
+
+    Relation Rename (vector<string>& attributesToRename)
+    {
+        ///This all deals with the Header
+        Header newHeader;
+        for (size_t i = 0; i < attributesToRename.size(); ++i) //for every name in the name vector
+        {
+            string attributeToRename = attributesToRename.at(i); //get the desired name.
+            newHeader.addAttributeToHeader(attributeToRename); //put it into a new header
+        }
+
+        set<Tuple> newRelationSet;
+        for (Tuple t : myTuples) //for every tuple
+        {
+            Tuple newTuple; //creates the desired Tuple
+            newTuple = t;
+            newTuple.setHeader(newHeader);
             newRelationSet.insert(newTuple); //new Tuple is finished, so put it in the new Set.
         }
 

@@ -134,17 +134,12 @@ public:
         }
 
         ///PROJECT
-        if (VariableIndeciesForProject.size()!=0) //does not do the project if it is all constants
-        {
-            copyRelation.Project(VariableIndeciesForProject);
-        }
+        copyRelation.Project(VariableIndeciesForProject);
 
 
         ///RENAME
-        for (size_t i = 0; i < VariablesNamesForRename.size(); ++i)
-        {
+        copyRelation.Rename(VariablesNamesForRename);
 
-        }
 
         return copyRelation;
     }
