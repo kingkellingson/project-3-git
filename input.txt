@@ -17,7 +17,7 @@ Facts:
    csg('EE200','12345','C').
    csg('EE200','22222','B+').
    csg('EE200','33333','B').
-   csg('CS101','33333','A-').
+   csg('CS101','33333','CS101').
    csg('PH100','67890','C+').
    cp('CS101','CS100').
    cp('EE200','EE005').
@@ -40,6 +40,6 @@ Rules:
 Queries:
    snap('33333','Snoopy','12 Apple St.','555-1234')?
    snap(S,'Snoopy',A,P)?
-   csg(C,'33333',G)?
+   csg(C,'33333',C)?
 
 

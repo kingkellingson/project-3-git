@@ -40,7 +40,7 @@ public:
     Relation ConstantSelect (string toMatch, size_t index)
     {
         //Relation newRelation = *this; //a copy of the current Relation
-        //set<Tuple> oldRelationSet = this->GetSetOfTuples(); // FIXME: Unnecessary copy (for readability)
+        //set<Tuple> oldRelationSet = this->GetSetOfTuples();
         set<Tuple> newRelationSet; //the set that I want to return
 
         for (Tuple t : myTuples) //go through and find the matches
@@ -48,6 +48,25 @@ public:
             if (t.getVector().at(index) == toMatch)
             {
                 newRelationSet.insert(t);
+                //t.setToKeep();
+                cout << endl << "Found a Match!";
+            }
+        }
+        this->SetSetOfTuples(newRelationSet);
+        return *this;
+    }
+
+    Relation VariableSelect (size_t index1, size_t index2)
+    {
+        //Relation newRelation = *this; //a copy of the current Relation
+        //set<Tuple> oldRelationSet = this->GetSetOfTuples();
+        set<Tuple> newRelationSet; //the set that I want to return
+
+        for (Tuple t : myTuples) //go through and find the matches
+        {
+            if (t.getVector().at(index1) == t.getVector().at(index2)) //if the two match each other
+            {
+                newRelationSet.insert(t); //then insert it into the new set
                 //t.setToKeep();
                 cout << endl << "Found a Match!";
             }

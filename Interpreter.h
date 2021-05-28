@@ -99,17 +99,34 @@ public:
 
         myTestRelation = myTestRelation.ConstantSelect("2", 1);*/
 
+        map <string, int> VariableMap;
+        //vector<string
+
+
+        ///SELECT functions
         for(size_t index = 0; index<predicate.getParameters().size(); ++index) //for every parameter in the predicate list.
         {
-            if (predicate.getParameters().at(index)->getDescription().at(0) == '\'' ) //if the first character of the selected predicate is a \'
+            string toMatch = predicate.getParameters().at(index)->getDescription(); //copies a string of the parameter in that position
+            if (toMatch.at(0) == '\'' ) //if the first character of the selected predicate is a \'
             {
                 cout << endl << "Found a Constant";
-                string toMatch = predicate.getParameters().at(index)->getDescription();
-                copyRelation.ConstantSelect(toMatch, index);
+                copyRelation.ConstantSelect(toMatch, index); //perform a Type 1 select on it
             }
             else //if not, then it must be a variable.
             {
                 cout << endl << "Found a Variable";
+                if (VariableMap.find(toMatch)==VariableMap.end()) //if that predicate is not in the list
+                {
+                    cout << "...and it is NOT a duplicate!";
+                    VariableMap.insert(pair<string, int>(toMatch,index)); //then add it to the list
+                }
+                else //if it IS in the list already
+                {
+                    cout << "...and it IS a duplicate!";
+                    size_t firstOccurrenceIndex = VariableMap.at(toMatch); //Makes an index of the first occurrence
+                    copyRelation.VariableSelect(firstOccurrenceIndex, index); //then perform a Type 2 select on it
+                }
+
             }
         }
         return copyRelation;
