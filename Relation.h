@@ -32,6 +32,11 @@ public:
         return myTuples;
     }
 
+    void SetHeader(Header input)
+    {
+        myHeader = input;
+    }
+
     void SetSetOfTuples (set<Tuple> input)
     {
         myTuples = input;
@@ -71,6 +76,37 @@ public:
                 cout << endl << "Found a Match!";
             }
         }
+        this->SetSetOfTuples(newRelationSet);
+        return *this;
+    }
+
+    Relation Project (vector<int> columnsToKeep)
+    {
+        ///This all deals with the Header
+        Header newHeader;
+        for (size_t i = 0; i < columnsToKeep.size(); ++i) //for every index in the index vector
+        {
+            int attributeToKeep = columnsToKeep.at(i); //get the desired index.
+            string valueToAdd = myHeader.getVector().at(attributeToKeep); // get the string at that index
+            newHeader.addAttributeToHeader(valueToAdd); //put it into a new header
+        }
+
+        ///This all deals with the Tuples
+        set<Tuple> newRelationSet;
+        for (Tuple t : myTuples) //for every tuple
+        {
+            Tuple newTuple; //creates the desired Tuple
+            for (size_t i = 0; i < columnsToKeep.size(); ++i) //for every index in the index vector
+            {
+                int columnToKeep = columnsToKeep.at(i); //get the desired index.
+                string valueToAdd = t.getVector().at(columnToKeep); // get the string at that index
+                newTuple.addValueToTuple(valueToAdd); //put it into a new tuple FIXME: Add a header
+                newTuple.setHeader(newHeader);
+            }
+            newRelationSet.insert(newTuple); //new Tuple is finished, so put it in the new Set.
+        }
+
+        this->SetHeader(newHeader);
         this->SetSetOfTuples(newRelationSet);
         return *this;
     }

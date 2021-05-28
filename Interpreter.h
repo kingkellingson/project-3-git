@@ -100,7 +100,9 @@ public:
         myTestRelation = myTestRelation.ConstantSelect("2", 1);*/
 
         map <string, int> VariableMap;
-        //vector<string
+        vector<string> VariablesNamesForRename;
+        vector<int> VariableIndeciesForProject;
+
 
 
         ///SELECT functions
@@ -119,6 +121,8 @@ public:
                 {
                     cout << "...and it is NOT a duplicate!";
                     VariableMap.insert(pair<string, int>(toMatch,index)); //then add it to the list
+                    VariablesNamesForRename.push_back(toMatch); //add to string vector for Rename
+                    VariableIndeciesForProject.push_back(index); //add to int vector for Project
                 }
                 else //if it IS in the list already
                 {
@@ -126,9 +130,22 @@ public:
                     size_t firstOccurrenceIndex = VariableMap.at(toMatch); //Makes an index of the first occurrence
                     copyRelation.VariableSelect(firstOccurrenceIndex, index); //then perform a Type 2 select on it
                 }
-
             }
         }
+
+        ///PROJECT
+        if (VariableIndeciesForProject.size()!=0) //does not do the project if it is all constants
+        {
+            copyRelation.Project(VariableIndeciesForProject);
+        }
+
+
+        ///RENAME
+        for (size_t i = 0; i < VariablesNamesForRename.size(); ++i)
+        {
+
+        }
+
         return copyRelation;
     }
 

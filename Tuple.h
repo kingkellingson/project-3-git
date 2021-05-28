@@ -26,6 +26,11 @@ public:
         attributes.push_back(valueToAdd);
     }
 
+    vector<string> getVector () const
+    {
+        return attributes;
+    }
+
     void toString ()
     {
         for (size_t i = 0; i < attributes.size(); ++i)
