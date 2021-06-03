@@ -54,7 +54,6 @@ private:
 public:
     Interpreter (DatalogProgram& parserOutput) : myProgramToInterpret (parserOutput)
     {
-        cout << endl << "Received!";
         run();
     }
 
@@ -62,10 +61,8 @@ public:
     {
         CreateRelations(); //Creates the Database according to the Schemes
         FillFacts(); //Fills the Relations with Tuples
-        PreEvaluateQueries();
-        cout << endl << "--------------EVALUATE--------------";
+
         EvaluateQueries();
-        cout << endl << "You Made it to the Database toString Function!";
         //myDatabase.toString();
     }
 
@@ -73,31 +70,6 @@ public:
     {
         string nameToMatch = predicate.getDescription(); //Determines the name of the desired Relation
         Relation copyRelation = myDatabase.getMap().at(nameToMatch); //creates a copy of Relation that matched the name
-
-        /*Header header2;
-        header2.addAttributeToHeader("D");
-        header2.addAttributeToHeader("E");
-        header2.addAttributeToHeader("F");
-
-        Tuple first;
-        first.addValueToTuple("1");
-        first.addValueToTuple("2");
-        first.addValueToTuple("3");
-        first.setHeaderPointer(header2);
-
-        Tuple second;
-        second.addValueToTuple("4");
-        second.addValueToTuple("5");
-        second.addValueToTuple("6");
-        second.setHeaderPointer(header2);
-
-        string toInsert = "Second Relation";
-
-        Relation myTestRelation(toInsert, header2);
-        myTestRelation.addTuple(first);
-        myTestRelation.addTuple(second);
-
-        myTestRelation = myTestRelation.ConstantSelect("2", 1);*/
 
         map <string, int> VariableMap;
         vector<string> VariablesNamesForRename;
@@ -111,22 +83,18 @@ public:
             string toMatch = predicate.getParameters().at(index)->getDescription(); //copies a string of the parameter in that position
             if (toMatch.at(0) == '\'' ) //if the first character of the selected predicate is a \'
             {
-                cout << endl << "Found a Constant";
                 copyRelation.ConstantSelect(toMatch, index); //perform a Type 1 select on it
             }
             else //if not, then it must be a variable.
             {
-                cout << endl << "Found a Variable";
                 if (VariableMap.find(toMatch)==VariableMap.end()) //if that predicate is not in the list
                 {
-                    cout << "...and it is NOT a duplicate!";
                     VariableMap.insert(pair<string, int>(toMatch,index)); //then add it to the list
                     VariablesNamesForRename.push_back(toMatch); //add to string vector for Rename
                     VariableIndeciesForProject.push_back(index); //add to int vector for Project
                 }
                 else //if it IS in the list already
                 {
-                    cout << "...and it IS a duplicate!";
                     size_t firstOccurrenceIndex = VariableMap.at(toMatch); //Makes an index of the first occurrence
                     copyRelation.VariableSelect(firstOccurrenceIndex, index); //then perform a Type 2 select on it
                 }
@@ -148,12 +116,13 @@ public:
     {
         for (size_t i = 0; i < myProgramToInterpret.getQueries().size(); ++i) //for every Query in the program's Query vector
         {
-            cout << endl;
+            if (i != 0)
+            {
+                cout << endl;
+            }
+
             myProgramToInterpret.getQueries().at(i)->toString(); //Print out the Query we are looking at.
             cout << "? ";
-
-            //string nameToMatch = myProgramToInterpret.getQueries().at(i)->getDescription(); //Determines the name of the desired Relation
-            //Tuple tuple = CreateTuple (myProgramToInterpret.getFacts().at(i)); //Creates a tuple from the Fact's parameters
 
             Relation EvaluatedPredicate = EvaluatePredicate(*myProgramToInterpret.getQueries().at(i)); //Make a Relation that is evaluated
 
@@ -166,9 +135,6 @@ public:
                 cout << "Yes(" << EvaluatedPredicate.NumberTuples() << ")"; //And "Yes" with the number of Tuples that matched
                 EvaluatedPredicate.toString(); //then prints them out
             }
-
-            //Relation& myRelation = myDatabase.getMap().at(nameToMatch); //creates an alias of the Relation that matched the name
-            //myRelation.addTuple(tuple); //Adds the created Tuple to that relation, into its set of Tuples.
         }
     }
 
@@ -182,29 +148,6 @@ public:
             Relation& myRelation = myDatabase.getMap().at(nameToMatch); //creates an alias of the Relation that matched the name
             tuple.setHeader(myRelation.getHeader()); //sets the header pointer of that created Tuple.
             myRelation.addTuple(tuple); //Adds the created Tuple to that relation, into its set of Tuples.
-        }
-    }
-
-    void PreEvaluateQueries ()
-    {
-        for (size_t i = 0; i < myProgramToInterpret.getQueries().size(); ++i) //for every Query in the program's Query vector
-        {
-            cout << endl;
-            myProgramToInterpret.getQueries().at(i)->toString(); //Print out the Query we are looking at.
-            cout << "? ";
-
-
-            Relation PreEvaluatedPredicate = myDatabase.getMap().at(myProgramToInterpret.getQueries().at(i)->getDescription()); //Make a Relation is in the Database
-
-            if (PreEvaluatedPredicate.NumberTuples()==0) //Outputs "No" if it does not have any tuples
-            {
-                cout << "No";
-            }
-            else
-            {
-                cout << "Yes(" << PreEvaluatedPredicate.NumberTuples() << ")"; //And "Yes" with the number of Tuples that matched
-                PreEvaluatedPredicate.toString(); //then prints them out
-            }
         }
     }
 

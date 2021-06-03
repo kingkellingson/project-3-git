@@ -519,7 +519,7 @@ void Parser::beginProgram(DatalogProgram&)
 {
     try {
         myProgram.begin();
-        myProgram.toString();
+        //myProgram.toString();
     }
     catch (Token* T)
     {
@@ -530,7 +530,6 @@ void Parser::beginProgram(DatalogProgram&)
 
 DatalogProgram& Parser::getProgram()
 {
-    cout << endl << "Gave Program!";
     return myProgram;
 }
 

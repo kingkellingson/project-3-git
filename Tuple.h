@@ -66,7 +66,6 @@ class Tuple {
 private:
     vector<string> values;
     Header header;
-    bool keep = false;
 public:
     bool operator< (const Tuple& other) const
     {

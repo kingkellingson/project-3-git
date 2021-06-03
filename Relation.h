@@ -62,8 +62,6 @@ public:
             if (t.getVector().at(index1) == t.getVector().at(index2)) //if the two match each other
             {
                 newRelationSet.insert(t); //then insert it into the new set
-                //t.setToKeep();
-                cout << endl << "Found a Match!";
             }
         }
         this->SetSetOfTuples(newRelationSet);
@@ -142,7 +140,6 @@ public:
 
     void toString ()
     {
-        cout << endl << "Tuples:";
         for (Tuple t : myTuples)
         {
             t.toString();
